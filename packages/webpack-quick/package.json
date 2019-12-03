@@ -4,11 +4,14 @@
   "description": "beiman webpack package",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "build": "node ../../node_modules/@walrus/pansy/dist/cli.js"
+  },
   "dependencies": {
     "@babel/core": "^7.7.4",
     "@svgr/core": "^4.3.3",
     "@walrus/shared-utils": "^0.4.1",
-    "autoprefixer": "^9.7.2",
+    "autoprefixer": "^9.7.3",
     "babel-loader": "^8.0.6",
     "copy-webpack-plugin": "^5.0.5",
     "css-modules-typescript-loader": "^4.0.0",
@@ -33,9 +36,13 @@
   },
   "devDependencies": {
     "@types/webpack": "^4.41.0",
+    "@types/webpack-dev-server": "^3.9.0",
+    "fibers": "^4.0.2",
     "node-sass": "^4.13.0",
+    "sass": "^1.23.7",
     "sass-loader": "^8.0.0",
     "stylus": "^0.54.7",
-    "stylus-loader": "^3.0.2"
+    "stylus-loader": "^3.0.2",
+    "ts-node": "^8.5.4"
   }
 }

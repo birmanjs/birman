@@ -1,5 +1,5 @@
 import Config from 'webpack-chain';
-import { ProgressPlugin } from 'webpack';
+import { ProgressPlugin, DevtoolModuleFilenameTemplateInfo } from 'webpack';
 import { join, resolve, relative } from 'path';
 import { EOL } from 'os';
 import { existsSync } from 'fs';
@@ -13,10 +13,14 @@ interface Options {
   outputPath: string;
   // 公有路径（静态资源文件所在的路径）
   publicPath: string;
+  // 别名
+  alias: {
+    [key: string]: string
+  }
 }
 
 const getWebpackConfig = (opts: Options) => {
-  const { cwd } = opts || {};
+  const { cwd, alias, publicPath, outputPath } = opts;
   const isDev = opts.isDev || process.env.NODE_ENV === 'development';
 
   const webpackConfig = new Config();
@@ -26,7 +30,7 @@ const getWebpackConfig = (opts: Options) => {
 
   // 输出
   // 输出路径 - 默认为dist目录
-  const absOutputPath = resolve(cwd, opts.outputPath || 'dist');
+  const absOutputPath = resolve(cwd, outputPath || 'dist');
 
   webpackConfig.output
     // output目录 (绝对路径)
@@ -36,13 +40,38 @@ const getWebpackConfig = (opts: Options) => {
     // 决定了非入口 chunk 文件的名称
     .chunkFilename(`[name].async.js`)
     // 公有路径
-    .publicPath(opts.publicPath || undefined)
-    .devtoolModuleFilenameTemplate(info => {
+    .publicPath(publicPath)
+    .devtoolModuleFilenameTemplate((info: DevtoolModuleFilenameTemplateInfo) => {
       return relative(opts.cwd, info.absoluteResourcePath).replace(/\\/g, '/');
     });
 
-  // resolve
+  // 解析
   webpackConfig.resolve
+    .set('symlinks', true)
+    .modules.add('node_modules')
+    .add(join(__dirname, '../../node_modules'))
+    .add(join(__dirname, '../../../'))
+    .end()
+    .extensions.merge([
+      '.web.js',
+      '.wasm',
+      '.mjs',
+      '.js',
+      '.web.jsx',
+      '.jsx',
+      '.web.ts',
+      '.ts',
+      '.web.tsx',
+      '.tsx',
+      '.json',
+    ]);
+
+  // 设置别名
+  if (opts.alias) {
+    for (const key in alias) {
+      webpackConfig.resolve.alias.set(key, alias[key]);
+    }
+  }
 }
 
 export default getWebpackConfig;
