@@ -1,0 +1,7 @@
+{
+  "name": "@birman/utils",
+  "version": "0.0.1",
+  "description": "briman utils",
+  "main": "index.js",
+  "license": "MIT"
+}
