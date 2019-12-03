@@ -7,13 +7,31 @@
   "repository": "git@github.com:birmanjs/birman.git",
   "author": "wangxingkang <156148958@qq.com>",
   "license": "MIT",
+  "scripts": {
+    "bootstrap": "yarn && lerna bootstrap",
+    "clean": "lerna clean",
+    "build": "lerna run build",
+    "test": "walrus test",
+    "prettier": "walrus prettier",
+    "lint": "walrus lint",
+    "lint:commit": "walrus commitlint --env HUSKY_GIT_PARAMS",
+    "prerelease": "yarn build",
+    "release": "walrus release"
+  },
   "devDependencies": {
     "@walrus/cli": "^0.4.1",
     "@walrus/pansy": "^0.3.0",
     "@walrus/plugin-release": "^1.1.0",
+    "husky": "^3.1.0",
     "lerna": "^3.19.0",
     "lerna-changelog": "^0.8.3",
     "typescript": "^3.7.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn prettier",
+      "commit-msg": "yarn lint:commit"
+    }
   },
   "workspaces": [
     "packages/*",
