@@ -9,7 +9,7 @@
   "license": "MIT",
   "devDependencies": {
     "@walrus/cli": "^0.4.1",
-    "@walrus/pansy": "^0.2.3",
+    "@walrus/pansy": "^0.3.0",
     "@walrus/plugin-release": "^1.1.0",
     "lerna": "^3.19.0",
     "lerna-changelog": "^0.8.3",
