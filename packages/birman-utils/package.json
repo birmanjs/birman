@@ -1,0 +1,11 @@
+{
+  "name": "@birman/utils",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "is-url": "^1.2.4",
+    "slash": "^3.0.0"
+  }
+}
