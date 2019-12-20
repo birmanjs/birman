@@ -1,0 +1,7 @@
+{
+  "name": "@birman/plugin-react",
+  "version": "0.0.1",
+  "description": "briman react plugin",
+  "main": "index.js",
+  "license": "MIT"
+}
