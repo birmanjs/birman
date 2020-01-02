@@ -1,11 +1,9 @@
 import assert from 'assert';
 import { isPlainObject } from 'lodash';
 
-export default function() {
-  return {
-    name: 'alias',
-    validate(val) {
-      assert(isPlainObject(val), `The alias config must be plain object, but got ${val}`);
-    }
+export default {
+  name: 'alias',
+  validate(val: any) {
+    assert(isPlainObject(val), `The alias config must be plain object, but got ${val}`);
   }
-}
+};

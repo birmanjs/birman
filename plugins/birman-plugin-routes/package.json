@@ -1,0 +1,11 @@
+{
+  "name": "@birman/plugin-routes",
+  "description": "briman routes plugin",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "typescript": "^3.7.4"
+  }
+}

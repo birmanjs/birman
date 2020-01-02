@@ -4,13 +4,19 @@
   "description": "beiman webpack package",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "test": "node ../../node_modules/@walrus/cli/lib/cli.js test"
+  },
   "dependencies": {
     "@babel/core": "^7.7.7",
+    "@birman/utils": "^1.0.0",
+    "@pansy/clear-console": "^1.0.1",
     "@svgr/core": "^4.3.3",
     "@walrus/shared-utils": "^0.4.1",
     "address": "^1.1.2",
     "assert": "^2.0.0",
     "autoprefixer": "^9.7.3",
+    "chokidar": "^3.3.1",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.4.0",
     "css-modules-typescript-loader": "^4.0.0",
@@ -26,7 +32,7 @@
     "style-loader": "^1.1.1",
     "terser-webpack-plugin": "^2.3.1",
     "ts-loader": "^6.2.1",
-    "typescript": "^3.7.3",
+    "typescript": "^3.7.4",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.41.4",
     "webpack-chain": "^6.2.0",
