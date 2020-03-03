@@ -1,21 +1,17 @@
 {
+  "version": "1.0.0",
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "version": "0.0.1",
-  "packages": [
-    "packages/*",
-    "plugins/*"
-  ],
   "changelog": {
-    "repo": "birman",
+    "repo": "birman/core",
     "labels": {
-      "PR: New Feature": ":rocket: New Features",
-      "PR: Breaking Change": ":boom: Breaking Changes",
-      "PR: Bug Fix": ":bug: Bug Fix",
-      "PR: Documentation": ":memo: Documentation",
-      "PR: Internal": ":house: Internal",
-      "PR: Underlying Tools": ":hammer: Underlying Tools"
+      "pr(enhancement)": ":rocket: Enhancement",
+      "pr(bug)": ":bug: Bug Fix",
+      "pr(documentation)": ":book: Documentation",
+      "pr(dependency)": ":deciduous_tree: Dependency",
+      "pr(chore)": ":turtle: Chore"
     },
     "cacheDir": ".changelog"
-  }
+  },
+  "ignoreChanges": ["**/*.md", "**/*.test.ts", "**/*.e2e.ts", "**/fixtures/**", "**/test/**"]
 }

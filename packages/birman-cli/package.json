@@ -1,7 +1,0 @@
-{
-  "name": "@birman/cli",
-  "version": "0.0.1",
-  "description": "@birman/cli",
-  "main": "index.js",
-  "license": "MIT"
-}

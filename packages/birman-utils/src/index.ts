@@ -1,4 +1,9 @@
-export { default as isUrl } from './is-url';
-export { default as winPath } from './win-path';
-export { default as clearConsole } from './clear-console';
-export { default as endWithSlash } from './end-with-slash';
+import * as address from 'address';
+import * as chokidar from 'chokidar';
+import createDebug, { Debugger } from 'debug';
+
+export { address };
+export { chokidar };
+export { createDebug, Debugger };
+
+export { default as isLernaPackage } from './is-lerna-package';
