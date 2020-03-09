@@ -1,8 +1,8 @@
 import address from 'address';
 import chalk from 'chalk';
-import * as cheerio from 'cheerio';
+import cheerio from 'cheerio';
 import spawn from 'cross-spawn';
-import * as chokidar from 'chokidar';
+import chokidar from 'chokidar';
 import clipboardy from 'clipboardy';
 import createDebug, { Debugger } from 'debug';
 import deepmerge from 'deepmerge';
