@@ -15,6 +15,14 @@
 - [glob](#glob)
 - [portfinder](#portfinder)
 - [got](#got)
+- [require](#require)
+- [yargs](#yargs)
+- [mkdirp](#mkdirp)
+- [mustache](#mustache)
+- [signale](#signale)
+- [rimraf](#rimraf)
+- [yParser](#yparser)
+- [semver](#semver)
 
 ## address
 
@@ -93,3 +101,51 @@
 **适用于 Node.js 的人性化且功能强大的 HTTP 请求库**
 
 具体 API 请查看 [got](https://github.com/sindresorhus/got)
+
+## require
+
+**实现 Node require.resolve()算法，以便您可以异步和同步地代表文件的 require.resolve()**
+
+具体 API 请查看 [resolve](https://github.com/browserify/resolve)
+
+## yargs
+
+**构建交互式命令行工具**
+
+具体 API 请查看 [yargs](https://github.com/yargs/yargs)
+
+## mkdirp
+
+**递归创建目录及其子目录**
+
+具体 API 请查看 [node-mkdirp](https://github.com/substack/node-mkdirp)
+
+## mustache
+
+**轻量级的模板引擎**
+
+具体 API 请查看 [mustache](https://github.com/janl/mustache.js)
+
+## signale
+
+**可配置的控制台日志输出工具**
+
+具体 API 请查看 [signale](https://github.com/klaussinani/signale)
+
+## rimraf
+
+**删除文件和文件夹**
+
+具体 API 请查看 [rimraf](https://github.com/isaacs/rimraf)
+
+## yParser
+
+**yargs 使用的强大选项解析器**
+
+具体 API 请查看 [yargs-parser](https://github.com/yargs/yargs-parser)
+
+## semver
+
+**Node 使用的语义化版本解析器**
+
+具体 API 请查看 [node-semver](https://github.com/npm/node-semver)
