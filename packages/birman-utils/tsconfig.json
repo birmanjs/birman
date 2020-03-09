@@ -1,5 +1,0 @@
-{
-  "extends": "../../tsconfig.json",
-  "include": ["./src", "../../is-lerna-package"],
-  "exclude": ["node_modules"]
-}
