@@ -7,8 +7,5 @@
 /.changelog
 /dist
 .DS_Store
-.umi
-.umi-production
-.umi-test
 **/fixtures/**/dist
 .now

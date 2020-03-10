@@ -48,4 +48,14 @@ export { parser };
 export { traverse };
 export { semver };
 
+export { default as babelRegister } from './babel-register';
+export { default as compatESModuleRequire } from './compat-esmodule-require';
+export { default as delay } from './delay';
+export { default as generator } from './generator';
+export { default as getFile } from './get-file';
 export { default as isLernaPackage } from './is-lerna-package';
+export { default as mergeConfig } from './merge-config';
+export { default as parseRequireDeps } from './parse-require-deps';
+export { default as randomColor } from './random-color';
+export { default as winPath } from './win-path';
+export { default as winEOL } from './win-eol';
