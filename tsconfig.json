@@ -1,23 +1,17 @@
 {
   "compilerOptions": {
-    /* Basic Options */
     "target": "esnext",
-    "module": "esnext",
-    "lib": ["esnext"],
-    "jsx": "react",
-
-    /* Strict Type-Checking Options */
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "alwaysStrict": true,
-    "declaration": true,
-
-    /* Module Resolution Options */
+    "moduleResolution": "node",
+    "jsx": "preserve",
+    "allowJs": true,
+    "skipLibCheck": true,
     "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "suppressImplicitAnyIndexErrors": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true
-  }
+    "declaration": true
+  },
+  "exclude": ["node_modules", "dist", "**/*.spec.ts", "lib", "fixtures", "examples"]
 }
