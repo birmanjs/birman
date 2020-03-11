@@ -127,4 +127,10 @@ export default class PluginAPI {
 
     plugins[this.id].enableBy = enableBy || EnableBy.register;
   }
+
+  skipPlugins(pluginIds: string[]) {
+    pluginIds.forEach((pluginId) => {
+      this.service.skipPluginIds.add(pluginId);
+    });
+  }
 }

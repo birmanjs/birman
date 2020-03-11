@@ -5,6 +5,73 @@ import { ApplyPluginsType } from './enums';
 
 const fixtures = join(__dirname, 'fixtures');
 
+const simplyPluginIds = ({ cwd, plugins }: { cwd: string; plugins: any }) =>
+  Object.keys(plugins).map((id) => {
+    const type = plugins[id].isPreset ? 'preset' : 'plugin';
+    return `[${type}] ${id.replace(winPath(cwd), '.')}`;
+  });
+
+test('normal', async () => {
+  const cwd = join(fixtures, 'normal');
+  const service = new Service({
+    cwd,
+    presets: [require.resolve(join(cwd, 'preset_1')), require.resolve(join(cwd, 'preset_2'))],
+    plugins: [require.resolve(join(cwd, 'plugin_1')), require.resolve(join(cwd, 'plugin_2'))]
+  });
+  expect(service.pkg.name).toEqual('foo');
+  expect(service.initialPresets.map((p) => p.key)).toEqual([
+    'index',
+    'index',
+    '2',
+    '2',
+    'bigfish',
+    '1',
+    '1'
+  ]);
+  expect(service.initialPlugins.map((p) => p.key)).toEqual([
+    'plugin1',
+    'plugin2',
+    '2',
+    '2',
+    '1',
+    '1'
+  ]);
+
+  await service.init();
+  const plugins = simplyPluginIds({
+    cwd: cwd,
+    plugins: service.plugins
+  });
+  expect(plugins).toEqual([
+    '[preset] ./preset_1/index',
+    '[preset] ./preset_1/preset_1/index',
+    '[preset] ./preset_2/index',
+    '[preset] @birman/preset-2',
+    '[preset] birman-preset-2',
+    '[preset] @alipay/birman-preset-bigfish',
+    '[preset] @birman/preset-1',
+    '[preset] birman-preset-1',
+    '[plugin] ./preset_1/preset_1/plugin_1',
+    '[plugin] ./preset_1/plugin_1',
+    '[plugin] ./preset_1/plugin_2',
+    '[plugin] ./preset_2/plugin_1',
+    '[plugin] ./plugin_1',
+    '[plugin] ./plugin_2',
+    '[plugin] @birman/plugin-2',
+    '[plugin] birman-plugin-2',
+    '[plugin] @birman/plugin-1',
+    '[plugin] birman-plugin-1'
+  ]);
+
+  expect(service.hooks['foo'].length).toEqual(2);
+
+  const ret = await service.applyPlugins({
+    key: 'foo',
+    type: ApplyPluginsType.add
+  });
+  expect(ret).toEqual(['a', 'a']);
+});
+
 test('api.args', async () => {
   const cwd = join(fixtures, 'api-args');
   const service = new Service({
@@ -125,4 +192,19 @@ test('registerPlugin id conflict (preset)', async () => {
     presets: [require.resolve(join(cwd, 'preset_1')), require.resolve(join(cwd, 'preset_2'))]
   });
   await expect(service.init()).rejects.toThrow(/preset foo is already registered by/);
+});
+
+test.skip('skip plugins', async () => {
+  const cwd = join(fixtures, 'skip-plugins');
+  const service = new Service({
+    cwd,
+    plugins: [
+      require.resolve(join(cwd, 'plugin_1')),
+      require.resolve(join(cwd, 'plugin_2')),
+      require.resolve(join(cwd, 'plugin_3')),
+      require.resolve(join(cwd, 'plugin_4'))
+    ]
+  });
+  await service.init();
+  expect(Object.keys(service.hooksByPluginId)).toEqual(['plugin_4']);
 });
