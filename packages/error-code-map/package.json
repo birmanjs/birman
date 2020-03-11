@@ -1,0 +1,14 @@
+{
+  "name": "@birman/error-code-map",
+  "version": "1.0.0",
+  "description": "error code map",
+  "main": "index.js",
+  "license": "MIT",
+  "files": [
+    "index.js",
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
