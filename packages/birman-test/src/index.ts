@@ -15,7 +15,7 @@ export default async function(args: BirmanTestArgs) {
   process.env.NODE_ENV = 'test';
 
   if (args.debug) {
-    createDebug.enable('umi:test');
+    createDebug.enable('birman:test');
   }
 
   debug(`args: ${JSON.stringify(args)}`);

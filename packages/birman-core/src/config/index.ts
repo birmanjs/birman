@@ -132,7 +132,7 @@ export default class Config {
         envConfigFile = this.addAffix(configFile, process.env.BIRMAN_ENV);
         if (!existsSync(join(this.cwd, envConfigFile))) {
           throw new Error(
-            `get user config failed, ${envConfigFile} does not exist, but process.env.UMI_ENV is set to ${process.env.BIRMAN_ENV}.`
+            `get user config failed, ${envConfigFile} does not exist, but process.env.BIRMAN_ENV is set to ${process.env.BIRMAN_ENV}.`
           );
         }
       }

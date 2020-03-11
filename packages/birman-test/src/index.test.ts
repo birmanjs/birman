@@ -9,8 +9,8 @@ beforeEach(() => {
 test('version', async () => {
   const spy = jest.spyOn(global.console, 'log').mockImplementation();
   // @ts-ignore
-  const { default: umiTest } = await import('./index');
-  await umiTest({
+  const { default: birmanTest } = await import('./index');
+  await birmanTest({
     version: true
   });
   expect(spy.mock.calls).toEqual([
@@ -34,8 +34,8 @@ test('run jest', async () => {
     };
   });
   // @ts-ignore
-  const { default: umiTest } = await import('./index');
-  await umiTest({
+  const { default: birmanTest } = await import('./index');
+  await birmanTest({
     cwd: join(fixtures, 'normal'),
     // for coverage
     debug: true,

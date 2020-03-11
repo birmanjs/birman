@@ -11,9 +11,9 @@ export interface BirmanTestArgs extends Partial<ArgsType<typeof runCLI>['0']> {
 }
 
 export type PickedJestCliOptions = {
-  [T in keyof typeof CliOptions]?: T extends keyof IUmiTestArgs[T]
+  [T in keyof typeof CliOptions]?: T extends keyof BirmanTestArgs[T]
     ? T
     : typeof CliOptions[T] extends { alias: infer U }
-    ? IUmiTestArgs[T]
+    ? BirmanTestArgs[T]
     : never;
 };

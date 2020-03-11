@@ -40,7 +40,7 @@ function getPluginsOrPresets(type: PluginType, opts: Opts): string[] {
     // opts
     ...((opts[type === PluginType.preset ? 'presets' : 'plugins'] as any) || []),
     // env
-    ...(process.env[`UMI_${upperCaseType}S`] || '').split(',').filter(Boolean),
+    ...(process.env[`BIRMAN_${upperCaseType}S`] || '').split(',').filter(Boolean),
     // dependencies
     ...Object.keys(opts.pkg.devDependencies || {})
       .concat(Object.keys(opts.pkg.dependencies || {}))
