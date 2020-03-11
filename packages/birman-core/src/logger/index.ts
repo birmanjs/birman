@@ -8,7 +8,7 @@ marked.setOptions({
   renderer: new TerminalRenderer()
 });
 
-interface ILogErrorOpts {
+interface LogErrorOpts {
   detailsOnly?: boolean;
 }
 
@@ -22,7 +22,7 @@ export default class Logger extends Common {
    * @param e only print BrimanError
    * @param opts
    */
-  private printBirmanError(e: BirmanError, opts = {} as ILogErrorOpts) {
+  private printBirmanError(e: BirmanError, opts = {} as LogErrorOpts) {
     const { detailsOnly } = opts;
     const { code } = e;
 

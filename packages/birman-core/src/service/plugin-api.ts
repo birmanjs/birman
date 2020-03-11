@@ -55,4 +55,34 @@ export default class PluginAPI {
       this.service.commands[alias] = name;
     }
   }
+
+  registerMethod({
+    name,
+    fn,
+    exitsError = true
+  }: {
+    name: string;
+    fn?: Function;
+    exitsError?: boolean;
+  }) {
+    if (this.service.pluginMethods[name]) {
+      if (exitsError) {
+        throw new Error(`api.registerMethod() failed, method ${name} is already exist.`);
+      } else {
+        return;
+      }
+    }
+    this.service.pluginMethods[name] =
+      fn ||
+      // 这里不能用 arrow function，this 需指向执行此方法的 PluginAPI
+      // 否则 pluginId 会不会，导致不能正确 skip plugin
+      function(fn: Function) {
+        const hook = {
+          key: name,
+          ...(utils.lodash.isPlainObject(fn) ? fn : { fn })
+        };
+        // @ts-ignore
+        this.register(hook);
+      };
+  }
 }

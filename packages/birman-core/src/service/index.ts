@@ -5,6 +5,7 @@ import assert from 'assert';
 import Logger from '../logger';
 import { BabelRegister, NodeEnv, lodash } from '@birman/utils';
 import { AsyncSeriesWaterfallHook } from 'tapable';
+import PluginAPI from './plugin-api';
 import { pathToObj, resolvePlugins, resolvePresets } from './utils/plugin-utils';
 import loadDotEnv from './utils/load-dot-env';
 import { ServiceStage, PluginType, ApplyPluginsType, EnableBy } from './enums';
@@ -46,6 +47,10 @@ export default class Service extends EventEmitter {
   // registered commands
   commands: {
     [name: string]: Command | string;
+  } = {};
+  // plugin methods
+  pluginMethods: {
+    [name: string]: Function;
   } = {};
   // including presets and plugins
   plugins: {
@@ -162,7 +167,47 @@ export default class Service extends EventEmitter {
     loadDotEnv(localPath);
   }
 
-  getPluginAPI(opts: any) {}
+  getPluginAPI(opts: any) {
+    const pluginAPI = new PluginAPI(opts);
+
+    // register built-in methods
+    ['onPluginReady', 'modifyPaths', 'onStart', 'modifyDefaultConfig', 'modifyConfig'].forEach(
+      (name) => {
+        pluginAPI.registerMethod({ name, exitsError: false });
+      }
+    );
+
+    return new Proxy(pluginAPI, {
+      get: (target, prop: string) => {
+        // 由于 pluginMethods 需要在 register 阶段可用
+        // 必须通过 proxy 的方式动态获取最新，以实现边注册边使用的效果
+        if (this.pluginMethods[prop]) return this.pluginMethods[prop];
+        if (
+          [
+            'applyPlugins',
+            'ApplyPluginsType',
+            'EnableBy',
+            'ConfigChangeType',
+            'babelRegister',
+            'stage',
+            'ServiceStage',
+            'paths',
+            'cwd',
+            'pkg',
+            'userConfig',
+            'config',
+            'env',
+            'args',
+            'hasPlugins',
+            'hasPresets'
+          ].includes(prop)
+        ) {
+          return typeof this[prop] === 'function' ? this[prop].bind(this) : this[prop];
+        }
+        return target[prop];
+      }
+    });
+  }
 
   registerPlugin(plugin: Plugin) {
     // 考虑要不要去掉这里的校验逻辑
@@ -241,7 +286,6 @@ ${name} from ${plugin.path} register failed.`);
 
   initPlugin(plugin: Plugin) {
     const { id, key, apply } = plugin;
-
     const api = this.getPluginAPI({ id, key, service: this });
 
     // register before apply
