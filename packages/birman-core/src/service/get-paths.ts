@@ -5,10 +5,7 @@ import { ServicePaths } from '@birman/types';
 
 interface Opts {
   cwd: string;
-  config: {
-    singular?: boolean;
-    outputPath?: string;
-  };
+  config: any;
   env?: string;
 }
 
