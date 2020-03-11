@@ -13,16 +13,16 @@ interface ILogErrorOpts {
 }
 
 export default class Logger extends Common {
-  private isUmiError(error: Error): error is BirmanError {
+  private isBirmanError(error: Error): error is BirmanError {
     return !!(error instanceof BirmanError);
   }
 
   /**
    *
-   * @param e only print UmiError
+   * @param e only print BrimanError
    * @param opts
    */
-  private printUmiError(e: BirmanError, opts = {} as ILogErrorOpts) {
+  private printBirmanError(e: BirmanError, opts = {} as ILogErrorOpts) {
     const { detailsOnly } = opts;
     const { code } = e;
 
@@ -69,9 +69,9 @@ export default class Logger extends Common {
   }
 
   public error(...args: any) {
-    if (this.isUmiError(args?.[0])) {
+    if (this.isBirmanError(args?.[0])) {
       // @ts-ignore
-      this.printUmiError(...args);
+      this.printBirmanError(...args);
     } else {
       process.stderr.write(chalk.black.bgRed('ERROR') + ' ');
       console.error(...args);

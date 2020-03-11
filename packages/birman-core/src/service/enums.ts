@@ -20,3 +20,9 @@ export enum ServiceStage {
   getPaths,
   run
 }
+
+export enum ApplyPluginsType {
+  add = 'add',
+  modify = 'modify',
+  event = 'event'
+}

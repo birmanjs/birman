@@ -1,5 +1,5 @@
 // @ts-ignore
-import errorCodeMap from '@umijs/error-code-map';
+import errorCodeMap from '@birman/error-code-map';
 
 export const ERROR_CODE_MAP = process.env.ERROR_CODE_MAP_PATH
   ? require(process.env.ERROR_CODE_MAP_PATH)

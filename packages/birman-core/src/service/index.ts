@@ -7,7 +7,7 @@ import { BabelRegister, NodeEnv, lodash } from '@birman/utils';
 import { AsyncSeriesWaterfallHook } from 'tapable';
 import { pathToObj, resolvePlugins, resolvePresets } from './utils/plugin-utils';
 import loadDotEnv from './utils/load-dot-env';
-import { ServiceStage } from './enums';
+import { ServiceStage, PluginType, ApplyPluginsType, EnableBy } from './enums';
 import Config from '../config';
 import { Command, Hook, Package, Plugin, Preset } from './types';
 import { getUserConfigWithKey } from '../config/utils/config-utils';
@@ -33,11 +33,15 @@ export default class Service extends EventEmitter {
   cwd: string;
   pkg: Package;
   env: string | undefined;
+  skipPluginIds: Set<string> = new Set<string>();
   // babel register
   babelRegister: BabelRegister;
   // hooks
   hooksByPluginId: {
     [id: string]: Hook[];
+  } = {};
+  hooks: {
+    [key: string]: Hook[];
   } = {};
   // registered commands
   commands: {
@@ -68,6 +72,9 @@ export default class Service extends EventEmitter {
   // presets and plugins for registering
   _extraPresets: Preset[] = [];
   _extraPlugins: Plugin[] = [];
+  args: any;
+  ApplyPluginsType = ApplyPluginsType;
+  EnableBy = EnableBy;
 
   constructor(opts: ServiceOpts) {
     super();
@@ -183,7 +190,54 @@ ${name} from ${plugin.path} register failed.`);
     }
   }
 
-  initPreset(preset: Preset) {}
+  initPreset(preset: Preset) {
+    const { id, key, apply } = preset;
+    preset.isPreset = true;
+
+    const api = this.getPluginAPI({ id, key, service: this });
+
+    const { presets, plugins, ...defaultConfigs } = apply()(api) || {};
+
+    // register before apply
+    this.registerPlugin(preset);
+
+    // register extra presets and plugins
+    if (presets) {
+      assert(Array.isArray(presets), `presets returned from preset ${id} must be Array.`);
+      // 插到最前面，下个 while 循环优先执行
+      this._extraPresets.splice(
+        0,
+        0,
+        ...presets.map((path: string) => {
+          return pathToObj({
+            type: PluginType.preset,
+            path,
+            cwd: this.cwd
+          });
+        })
+      );
+    }
+
+    // 深度优先
+    const extraPresets = lodash.clone(this._extraPresets);
+    this._extraPresets = [];
+    while (extraPresets.length) {
+      this.initPreset(extraPresets.shift()!);
+    }
+
+    if (plugins) {
+      assert(Array.isArray(plugins), `plugins returned from preset ${id} must be Array.`);
+      this._extraPlugins.push(
+        ...plugins.map((path: string) => {
+          return pathToObj({
+            type: PluginType.plugin,
+            path,
+            cwd: this.cwd
+          });
+        })
+      );
+    }
+  }
 
   initPlugin(plugin: Plugin) {
     const { id, key, apply } = plugin;
@@ -193,5 +247,189 @@ ${name} from ${plugin.path} register failed.`);
     // register before apply
     this.registerPlugin(plugin);
     apply()(api);
+  }
+
+  isPluginEnable(pluginId: string) {
+    // api.skipPlugins() 的插件
+    if (this.skipPluginIds.has(pluginId)) return false;
+
+    const { key, enableBy } = this.plugins[pluginId];
+
+    // 手动设置为 false
+    if (this.userConfig[key] === false) return false;
+
+    // 配置开启
+    if (enableBy === this.EnableBy.config && !(key in this.userConfig)) {
+      return false;
+    }
+
+    // 函数自定义开启
+    if (typeof enableBy === 'function') {
+      return enableBy();
+    }
+
+    // 注册开启
+    return true;
+  }
+
+  async applyPlugins(opts: {
+    key: string;
+    type: ApplyPluginsType;
+    initialValue?: any;
+    args?: any;
+  }) {
+    const hooks = this.hooks[opts.key] || [];
+    switch (opts.type) {
+      case ApplyPluginsType.add:
+        if ('initialValue' in opts) {
+          assert(
+            Array.isArray(opts.initialValue),
+            `applyPlugins failed, opts.initialValue must be Array if opts.type is add.`
+          );
+        }
+        const tAdd = new AsyncSeriesWaterfallHook(['memo']);
+        for (const hook of hooks) {
+          if (!this.isPluginEnable(hook.pluginId!)) {
+            continue;
+          }
+          tAdd.tapPromise(
+            {
+              name: hook.pluginId!,
+              stage: hook.stage || 0,
+              // @ts-ignore
+              before: hook.before
+            },
+            async (memo: any[]) => {
+              const items = await hook.fn(opts.args);
+              return memo.concat(items);
+            }
+          );
+        }
+        return await tAdd.promise(opts.initialValue || []);
+      case ApplyPluginsType.modify:
+        const tModify = new AsyncSeriesWaterfallHook(['memo']);
+        for (const hook of hooks) {
+          if (!this.isPluginEnable(hook.pluginId!)) {
+            continue;
+          }
+          tModify.tapPromise(
+            {
+              name: hook.pluginId!,
+              stage: hook.stage || 0,
+              // @ts-ignore
+              before: hook.before
+            },
+            async (memo: any) => {
+              return await hook.fn(memo, opts.args);
+            }
+          );
+        }
+        return await tModify.promise(opts.initialValue);
+      case ApplyPluginsType.event:
+        const tEvent = new AsyncSeriesWaterfallHook(['_']);
+        for (const hook of hooks) {
+          if (!this.isPluginEnable(hook.pluginId!)) {
+            continue;
+          }
+          tEvent.tapPromise(
+            {
+              name: hook.pluginId!,
+              stage: hook.stage || 0,
+              // @ts-ignore
+              before: hook.before
+            },
+            async () => {
+              await hook.fn(opts.args);
+            }
+          );
+        }
+        return await tEvent.promise();
+      default:
+        throw new Error(
+          `applyPlugin failed, type is not defined or is not matched, got ${opts.type}.`
+        );
+    }
+  }
+
+  async init() {
+    // we should have the final hooksByPluginId which is added with api.register()
+    this.initPresetsAndPlugins();
+    // hooksByPluginId -> hooks
+    // hooks is mapped with hook key, prepared for applyPlugins()
+    this.setStage(ServiceStage.initHooks);
+    Object.keys(this.hooksByPluginId).forEach((id) => {
+      const hooks = this.hooksByPluginId[id];
+      hooks.forEach((hook) => {
+        const { key } = hook;
+        hook.pluginId = id;
+        this.hooks[key] = (this.hooks[key] || []).concat(hook);
+      });
+    });
+    // plugin is totally ready
+    this.setStage(ServiceStage.pluginReady);
+    this.applyPlugins({
+      key: 'onPluginReady',
+      type: ApplyPluginsType.event
+    });
+
+    // get config, including:
+    // 1. merge default config
+    // 2. validate
+    this.setStage(ServiceStage.getConfig);
+    const defaultConfig = await this.applyPlugins({
+      key: 'modifyDefaultConfig',
+      type: this.ApplyPluginsType.modify,
+      initialValue: await this.configInstance.getDefaultConfig()
+    });
+    this.config = await this.applyPlugins({
+      key: 'modifyConfig',
+      type: this.ApplyPluginsType.modify,
+      initialValue: this.configInstance.getConfig({
+        defaultConfig
+      }) as any
+    });
+
+    // merge paths to keep the this.paths ref
+    this.setStage(ServiceStage.getPaths);
+    // config.outputPath may be modified by plugins
+    if (this.config!.outputPath) {
+      this.paths.absOutputPath = join(this.cwd, this.config!.outputPath);
+    }
+    const paths = (await this.applyPlugins({
+      key: 'modifyPaths',
+      type: ApplyPluginsType.modify,
+      initialValue: this.paths
+    })) as object;
+    Object.keys(paths).forEach((key) => {
+      this.paths[key] = paths[key];
+    });
+  }
+
+  async run({ name, args = {} }: { name: string; args?: any }) {
+    args._ = args._ || [];
+    // shift the command itself
+    args._.shift();
+    this.args = args;
+    this.setStage(ServiceStage.init);
+    await this.init();
+
+    logger.debug('plugins:');
+    logger.debug(this.plugins);
+
+    this.stage = ServiceStage.run;
+
+    const command =
+      typeof this.commands[name] === 'string'
+        ? this.commands[this.commands[name] as string]
+        : this.commands[name];
+    assert(command, `run command failed, command ${name} does not exists.`);
+
+    await this.applyPlugins({
+      key: 'onStart',
+      type: ApplyPluginsType.event
+    });
+
+    const { fn } = command as Command;
+    return fn({ args });
   }
 }
