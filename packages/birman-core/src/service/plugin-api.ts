@@ -86,6 +86,49 @@ export default class PluginAPI {
       };
   }
 
+  registerPresets(presets: (Preset | string)[]) {
+    assert(
+      this.service.stage === ServiceStage.initPresets,
+      `api.registerPresets() failed, it should only used in presets.`
+    );
+    assert(Array.isArray(presets), `api.registerPresets() failed, presets must be Array.`);
+    const extraPresets = presets.map((preset) => {
+      return isValidPlugin(preset as any)
+        ? (preset as Preset)
+        : pathToObj({
+            type: PluginType.preset,
+            path: preset as string,
+            cwd: this.service.cwd
+          });
+    });
+    // 插到最前面，下个 while 循环优先执行
+    this.service._extraPresets.splice(0, 0, ...extraPresets);
+  }
+
+  // 在 preset 初始化阶段放后面，在插件注册阶段放前面
+  registerPlugins(plugins: (Plugin | string)[]) {
+    assert(
+      this.service.stage === ServiceStage.initPresets ||
+        this.service.stage === ServiceStage.initPlugins,
+      `api.registerPlugins() failed, it should only be used in registering stage.`
+    );
+    assert(Array.isArray(plugins), `api.registerPlugins() failed, plugins must be Array.`);
+    const extraPlugins = plugins.map((plugin) => {
+      return isValidPlugin(plugin as any)
+        ? (plugin as Preset)
+        : pathToObj({
+            type: PluginType.plugin,
+            path: plugin as string,
+            cwd: this.service.cwd
+          });
+    });
+    if (this.service.stage === ServiceStage.initPresets) {
+      this.service._extraPlugins.push(...extraPlugins);
+    } else {
+      this.service._extraPlugins.splice(0, 0, ...extraPlugins);
+    }
+  }
+
   /**
    *
    * @param opts

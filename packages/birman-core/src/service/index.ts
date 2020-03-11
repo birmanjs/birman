@@ -209,6 +209,20 @@ export default class Service extends EventEmitter {
     });
   }
 
+  hasPlugins(pluginIds: string[]) {
+    return pluginIds.every((pluginId) => {
+      const plugin = this.plugins[pluginId];
+      return plugin && !plugin.isPreset && this.isPluginEnable(pluginId);
+    });
+  }
+
+  hasPresets(presetIds: string[]) {
+    return presetIds.every((presetId) => {
+      const preset = this.plugins[presetId];
+      return preset && preset.isPreset && this.isPluginEnable(presetId);
+    });
+  }
+
   registerPlugin(plugin: Plugin) {
     // 考虑要不要去掉这里的校验逻辑
     // 理论上不会走到这里，因为在 describe 的时候已经做了冲突校验
