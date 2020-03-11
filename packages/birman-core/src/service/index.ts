@@ -241,10 +241,10 @@ ${name} from ${plugin.path} register failed.`);
 
     const api = this.getPluginAPI({ id, key, service: this });
 
-    const { presets, plugins, ...defaultConfigs } = apply()(api) || {};
-
     // register before apply
     this.registerPlugin(preset);
+
+    const { presets, plugins, ...defaultConfigs } = apply()(api) || {};
 
     // register extra presets and plugins
     if (presets) {

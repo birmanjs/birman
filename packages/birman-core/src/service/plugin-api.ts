@@ -85,4 +85,46 @@ export default class PluginAPI {
         this.register(hook);
       };
   }
+
+  /**
+   *
+   * @param opts
+   */
+  describe({
+    id,
+    key,
+    config,
+    enableBy
+  }: {
+    id?: string;
+    key?: string;
+    config?: PluginConfig;
+    enableBy?: EnableBy | (() => boolean);
+  } = {}) {
+    const { plugins } = this.service;
+
+    if (id && this.id !== id) {
+      if (plugins[id]) {
+        const name = plugins[id].isPreset ? 'preset' : 'plugin';
+        throw new Error(
+          `api.describe() failed, ${name} ${id} is already registered by ${plugins[id].path}.`
+        );
+      }
+      plugins[id] = plugins[this.id];
+      plugins[id].id = id;
+      delete plugins[this.id];
+      this.id = id;
+    }
+
+    if (key && this.key !== key) {
+      this.key = key;
+      plugins[this.id].key = key;
+    }
+
+    if (config) {
+      plugins[this.id].config = config;
+    }
+
+    plugins[this.id].enableBy = enableBy || EnableBy.register;
+  }
 }
