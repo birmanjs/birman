@@ -10,7 +10,7 @@
   "scripts": {
     "bootstrap": "yarn && lerna bootstrap",
     "build": "father-build",
-    "test": "walrus test",
+    "test": "node ./packages/birman-test/bin/birman-test.js",
     "prettier": "walrus prettier",
     "lint": "walrus lint",
     "lint:commit": "walrus commitlint --env HUSKY_GIT_PARAMS",
