@@ -95,7 +95,12 @@ function pkgNameToKey(pkgName: string, type: PluginType) {
 }
 
 /**
+ * 解析路径为插件对象
  *
+ * 插件的 id 规则
+ *  * 插件的 id 规则
+ *  * 文件级的插件，如果没有声明 id，默认为 name + 相对路径
+ *  * 内置插件以 @@ 为前缀，比如 @@/registerMethod
  * @param options
  */
 export function pathToObj({ type, path, cwd }: PathToObjOpts) {

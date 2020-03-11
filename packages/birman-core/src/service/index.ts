@@ -209,6 +209,10 @@ export default class Service extends EventEmitter {
     });
   }
 
+  /**
+   * 判断是否有注册某个插件
+   * @param pluginIds
+   */
   hasPlugins(pluginIds: string[]) {
     return pluginIds.every((pluginId) => {
       const plugin = this.plugins[pluginId];
@@ -216,6 +220,10 @@ export default class Service extends EventEmitter {
     });
   }
 
+  /**
+   * 判断是否有注册某个插件集
+   * @param presetIds
+   */
   hasPresets(presetIds: string[]) {
     return presetIds.every((presetId) => {
       const preset = this.plugins[presetId];

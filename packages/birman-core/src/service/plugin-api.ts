@@ -30,6 +30,10 @@ export default class PluginAPI {
     this.logger = new Logger(`birman:plugin:${this.id || this.key}`);
   }
 
+  /**
+   * api.applyPlugins 注册可供其使用的 hook
+   * @param hook
+   */
   register(hook: Hook) {
     assert(
       hook.key && typeof hook.key === 'string',
@@ -44,6 +48,9 @@ export default class PluginAPI {
     );
   }
 
+  /**
+   * 注册命令
+   * */
   registerCommand(command: Command) {
     const { name, alias } = command;
     assert(
@@ -56,6 +63,13 @@ export default class PluginAPI {
     }
   }
 
+  /**
+   * 往 api 上注册方法
+   * @param opts
+   * @param opts.name
+   * @param opts.fn
+   * @param opts.exitsError 如果方法存在则报错
+   */
   registerMethod({
     name,
     fn,
@@ -86,6 +100,10 @@ export default class PluginAPI {
       };
   }
 
+  /**
+   * 注册插件集
+   * @param presets
+   */
   registerPresets(presets: (Preset | string)[]) {
     assert(
       this.service.stage === ServiceStage.initPresets,
@@ -105,7 +123,11 @@ export default class PluginAPI {
     this.service._extraPresets.splice(0, 0, ...extraPresets);
   }
 
-  // 在 preset 初始化阶段放后面，在插件注册阶段放前面
+  /**
+   * 注册插件
+   * @description 在 preset 初始化阶段放后面，在插件注册阶段放前面
+   * @param plugins
+   */
   registerPlugins(plugins: (Plugin | string)[]) {
     assert(
       this.service.stage === ServiceStage.initPresets ||
@@ -130,8 +152,13 @@ export default class PluginAPI {
   }
 
   /**
-   *
+   * 描述插件或插件集
+   * @description 注册阶段执行
    * @param opts
+   * @param opts.id 插件ID
+   * @param opts.key 插件key
+   * @param opts.config 配置信息
+   * @param opts.enableBy 启用方式 默认注册时启用
    */
   describe({
     id,
@@ -171,6 +198,10 @@ export default class PluginAPI {
     plugins[this.id].enableBy = enableBy || EnableBy.register;
   }
 
+  /**
+   * 声明需要禁用的插件集合
+   * @param pluginIds 插件 id 的数组
+   */
   skipPlugins(pluginIds: string[]) {
     pluginIds.forEach((pluginId) => {
       this.service.skipPluginIds.add(pluginId);
