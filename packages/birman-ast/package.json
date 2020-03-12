@@ -1,0 +1,17 @@
+{
+  "name": "@birman/ast",
+  "version": "1.0.0",
+  "description": "birman ast",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@birman/utils": "^1.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
