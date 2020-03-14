@@ -2,7 +2,7 @@ const { readdirSync, readFileSync, existsSync } = require('fs');
 const { join } = require('path');
 const assert = require('assert');
 
-const dir = join(__dirname, './lib/errors');
+const dir = join(__dirname, './dist/errors');
 const errors = readdirSync(dir)
   .filter((error) => error.startsWith('ERR_'))
   .reduce((memo, error) => {

@@ -1,6 +1,6 @@
 {
   "name": "@birman/bundler-webpack",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "bundler webpack",
   "main": "index.js",
   "license": "MIT",
@@ -28,5 +28,9 @@
     "webpack-dev-middleware": "^3.7.2",
     "webpack-manifest-plugin": "^2.2.0",
     "webpackbar": "^4.0.0"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "9563cdddd904a41448d36045971893db7bd8d881"
 }

@@ -1,20 +1,15 @@
 {
-  "name": "@birman/types",
+  "name": "@birman/ast",
   "version": "1.0.1",
-  "description": "birman types",
+  "description": "birman ast",
   "main": "lib/index.js",
-  "types": "index",
+  "types": "lib/index.d.ts",
   "files": [
-    "index.d.ts",
-    "index.js"
+    "lib"
   ],
   "license": "MIT",
-  "keywords": [
-    "birman"
-  ],
   "dependencies": {
-    "@birman/core": "^1.0.1",
-    "@types/webpack": "^4.41.7"
+    "@birman/utils": "^1.0.1"
   },
   "publishConfig": {
     "access": "public"

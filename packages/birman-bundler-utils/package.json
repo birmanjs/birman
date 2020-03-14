@@ -1,13 +1,12 @@
 {
-  "name": "@birman/error-code-map",
+  "name": "@birman/bundler-utils",
   "version": "1.0.1",
-  "description": "error code map",
   "main": "index.js",
   "license": "MIT",
-  "files": [
-    "index.js",
-    "dist"
-  ],
+  "dependencies": {
+    "@birman/babel-preset-birman": "^1.0.1",
+    "@birman/types": "^1.0.1"
+  },
   "publishConfig": {
     "access": "public"
   },

@@ -26,3 +26,27 @@ export interface Opts {
   addHTMLStyles?: AddHTML<Partial<Style>[]>;
   modifyHTML?: ModifyHTML;
 }
+
+export interface HtmlConfig {
+  metas?: HTMLTag[];
+  links?: Partial<HTMLLinkElement>[];
+  styles?: Partial<Style>[];
+  headScripts?: HTMLTag[];
+  scripts?: HTMLTag[];
+}
+
+export interface Script extends Partial<HTMLScriptElement> {
+  content?: string;
+}
+
+export interface GetContentArgs extends HtmlConfig {
+  route: RouteType;
+  headJSFiles?: string[];
+  jsFiles?: string[];
+  cssFiles?: string[];
+  tplPath?: string;
+  modifyHTML?: ModifyHTML;
+}
+
+export type ScriptConfig = Array<Script | string>;
+export type StyleConfig = Array<Style | string>;

@@ -1,6 +1,6 @@
 {
   "name": "@birman/utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -61,5 +61,6 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "9563cdddd904a41448d36045971893db7bd8d881"
 }

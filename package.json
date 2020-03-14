@@ -1,9 +1,7 @@
 {
   "name": "@birman/workspace",
-  "version": "0.0.1",
   "description": "react application framework",
   "private": true,
-  "main": "index.js",
   "repository": "git@github.com:birmanjs/birman.git",
   "author": "wangxingkang <wang_xingkang@qq.com>",
   "license": "MIT",
@@ -34,8 +32,7 @@
     }
   },
   "workspaces": [
-    "packages/*",
-    "examples/*"
+    "packages/*"
   ],
   "engines": {
     "node": ">=10.9.0",
