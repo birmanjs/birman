@@ -6,5 +6,9 @@
   "dependencies": {
     "@birman/babel-preset-birman": "^1.0.1",
     "@birman/types": "^1.0.1"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "9563cdddd904a41448d36045971893db7bd8d881"
 }
