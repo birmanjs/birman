@@ -1,6 +1,6 @@
 {
   "name": "@birman/test",
-  "version": "1.0.1",
+  "version": "1.0.1-1",
   "description": "test library",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -15,8 +15,8 @@
   "license": "MIT",
   "dependencies": {
     "@babel/core": "^7.8.7",
-    "@birman/babel-preset-birman": "^1.0.1",
-    "@birman/utils": "^1.0.1",
+    "@birman/babel-preset-birman": "^1.0.1-1",
+    "@birman/utils": "^1.0.1-1",
     "@types/jest": "^25.1.4",
     "babel-jest": "^25.1.0",
     "core-js": "^3.6.4",
