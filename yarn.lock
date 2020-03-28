@@ -4052,10 +4052,10 @@
   dependencies:
     prettier "^2.0.1"
 
-"@walrus/plugin-release@^1.5.0":
-  version "1.5.0"
-  resolved "https://registry.npm.taobao.org/@walrus/plugin-release/download/@walrus/plugin-release-1.5.0.tgz#f4226fe33746616198f0ce1298b2e936289177e5"
-  integrity sha1-9CJv4zdGYWGY8M4SmLLpNiiRd+U=
+"@walrus/plugin-release@^1.6.0":
+  version "1.6.0"
+  resolved "https://registry.npm.taobao.org/@walrus/plugin-release/download/@walrus/plugin-release-1.6.0.tgz#d236f9f1272b09672b9db96e1d7889fd82af74b7"
+  integrity sha1-0jb58ScrCWcrnbluHXiJ/YKvdLc=
   dependencies:
     escape-goat "^3.0.0"
     inquirer "^7.1.0"
@@ -11282,7 +11282,7 @@ onetime@^5.1.0:
 
 open@^7.0.3:
   version "7.0.3"
-  resolved "https://registry.npm.taobao.org/open/download/open-7.0.3.tgz#db551a1af9c7ab4c7af664139930826138531c48"
+  resolved "https://registry.npm.taobao.org/open/download/open-7.0.3.tgz?cache=0&sync_timestamp=1583734682914&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fopen%2Fdownload%2Fopen-7.0.3.tgz#db551a1af9c7ab4c7af664139930826138531c48"
   integrity sha1-21UaGvnHq0x69mQTmTCCYThTHEg=
   dependencies:
     is-docker "^2.0.0"
