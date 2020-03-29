@@ -1,14 +1,20 @@
 {
-  "name": "@birman/babel-plugin-auto-css-modules",
+  "name": "@birman/types",
   "version": "1.1.1",
+  "description": "birman types",
   "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "types": "index",
   "files": [
-    "lib"
+    "index.d.ts",
+    "index.js"
   ],
   "license": "MIT",
+  "keywords": [
+    "birman"
+  ],
   "dependencies": {
-    "@birman/utils": "1.1.1"
+    "@birman/core": "1.1.1",
+    "@types/webpack": "^4.41.7"
   },
   "publishConfig": {
     "access": "public"

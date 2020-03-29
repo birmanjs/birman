@@ -7,14 +7,14 @@
   "license": "MIT",
   "scripts": {
     "build": "father-build",
-    "test": "node ./packages/birman-test/bin/birman-test.js",
+    "test": "node ./packages/test/bin/birman-test.js",
     "prettier": "walrus prettier",
     "lint": "walrus lint",
     "lint:commit": "walrus commitlint --env HUSKY_GIT_PARAMS",
     "release": "walrus release"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.6",
+    "@babel/core": "^7.9.0",
     "@walrus/cli": "^1.1.3",
     "@walrus/plugin-release": "^1.6.0",
     "@walrus/preset-lint": "^1.1.1",
