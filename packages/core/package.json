@@ -8,7 +8,7 @@
     "@babel/register": "^7.8.6",
     "@birman/ast": "1.1.1",
     "@birman/babel-preset-birman": "1.1.1",
-    "@birman/error-code-map": "^1.1.0",
+    "@birman/error-code-map": "^1.2.0",
     "@birman/types": "1.1.1",
     "@birman/utils": "1.1.1",
     "@hapi/joi": "^17.1.0",
