@@ -1,6 +1,6 @@
 {
   "name": "@birman/utils",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -15,7 +15,7 @@
     "@babel/register": "^7.8.6",
     "@babel/traverse": "^7.8.6",
     "@babel/types": "^7.8.6",
-    "@birman/babel-preset-birman": "1.1.1",
+    "@birman/babel-preset-birman": "1.1.2",
     "@types/cheerio": "^0.22.16",
     "@types/color": "^3.0.1",
     "@types/cross-spawn": "^6.0.1",
