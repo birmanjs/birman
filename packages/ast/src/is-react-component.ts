@@ -1,4 +1,4 @@
-import { traverse } from '@birman/utils';
+import { traverse } from '@birman/babel-plugin-utils';
 import { parse } from './utils';
 
 export default function isReactComponent(code: string) {

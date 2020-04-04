@@ -1,4 +1,4 @@
-import { t, traverse } from '@birman/utils';
+import { types, traverse } from '@birman/babel-plugin-utils';
 import { parse } from './utils';
 
 export default function getExportProps(code: string) {
@@ -9,7 +9,7 @@ export default function getExportProps(code: string) {
       enter(path: any) {
         const node = path.node;
         const defaultExport = findExportDefault(node);
-        if (!defaultExport || !t.isIdentifier(defaultExport)) return;
+        if (!defaultExport || !types.isIdentifier(defaultExport)) return;
 
         const { name } = defaultExport;
         props = findAssignmentExpressionProps({
@@ -22,32 +22,32 @@ export default function getExportProps(code: string) {
   return props;
 }
 
-function findExportDefault(programNode: t.Program) {
+function findExportDefault(programNode: types.Program) {
   for (const n of programNode.body) {
-    if (t.isExportDefaultDeclaration(n)) {
+    if (types.isExportDefaultDeclaration(n)) {
       return n.declaration;
     }
   }
   return null;
 }
 
-function findAssignmentExpressionProps(opts: { programNode: t.Program; name: string }) {
+function findAssignmentExpressionProps(opts: { programNode: types.Program; name: string }) {
   const props = {};
   for (const n of opts.programNode.body) {
     let node = n;
-    if (t.isExpressionStatement(node)) {
+    if (types.isExpressionStatement(node)) {
       // @ts-ignore
       node = node.expression;
     }
     if (
-      t.isAssignmentExpression(node) &&
-      t.isMemberExpression(node.left) &&
-      t.isIdentifier(node.left.object) &&
-      (t.isStringLiteral(node.right) ||
-        t.isNumericLiteral(node.right) ||
-        t.isBooleanLiteral(node.right))
+      types.isAssignmentExpression(node) &&
+      types.isMemberExpression(node.left) &&
+      types.isIdentifier(node.left.object) &&
+      (types.isStringLiteral(node.right) ||
+        types.isNumericLiteral(node.right) ||
+        types.isBooleanLiteral(node.right))
     ) {
-      props[node.left.property.name] = (node.right as t.StringLiteral).value;
+      props[node.left.property.name] = (node.right as types.StringLiteral).value;
     }
   }
   return props;

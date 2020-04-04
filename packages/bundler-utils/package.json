@@ -4,8 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@birman/babel-preset-birman": "1.1.2",
-    "@birman/types": "1.1.2"
+    "@birman/types": "1.1.2",
+    "@birman/babel-preset-birman": "1.2.0"
   },
   "publishConfig": {
     "access": "public"

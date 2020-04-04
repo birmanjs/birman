@@ -18,9 +18,6 @@ import mustache from 'mustache';
 import signale from 'signale';
 import rimraf from 'rimraf';
 import yParser from 'yargs-parser';
-import * as t from '@babel/types';
-import * as parser from '@babel/parser';
-import * as traverse from '@babel/traverse';
 import semver from 'semver';
 
 export { address };
@@ -43,9 +40,6 @@ export { mustache };
 export { signale };
 export { rimraf };
 export { yParser };
-export { t };
-export { parser };
-export { traverse };
 export { semver };
 
 export { default as BabelRegister } from './babel-register';

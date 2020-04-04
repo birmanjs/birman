@@ -9,7 +9,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@birman/utils": "1.1.2"
+    "@birman/babel-plugin-utils": "^1.1.0"
   },
   "publishConfig": {
     "access": "public"

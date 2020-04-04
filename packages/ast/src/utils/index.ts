@@ -1,6 +1,6 @@
-import { t, parser } from '@birman/utils';
+import { types, parser } from '@birman/babel-plugin-utils';
 
-export function parse(code: string): t.File {
+export function parse(code: string): types.File {
   return parser.parse(code, {
     sourceType: 'module',
     plugins: [
