@@ -2983,7 +2983,7 @@
     "@types/istanbul-lib-coverage" "*"
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@^25.1.4":
+"@types/jest@^25.1.4", "@types/jest@^25.2.1":
   version "25.2.1"
   resolved "https://registry.npm.taobao.org/@types/jest/download/@types/jest-25.2.1.tgz?cache=0&sync_timestamp=1585952758730&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fjest%2Fdownload%2F%40types%2Fjest-25.2.1.tgz#9544cd438607955381c1bdbdb97767a249297db5"
   integrity sha1-lUTNQ4YHlVOBwb29uXdnokkpfbU=
@@ -3344,6 +3344,24 @@
     "@walrus/plugin-eslint" "1.1.0"
     "@walrus/plugin-prettier" "1.1.0"
     "@walrus/plugin-stylelint" "1.1.1"
+
+"@walrus/test@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.npm.taobao.org/@walrus/test/download/@walrus/test-1.0.1.tgz?cache=0&sync_timestamp=1586017718178&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40walrus%2Ftest%2Fdownload%2F%40walrus%2Ftest-1.0.1.tgz#832ab20c90092c125c8aeea89f3818010cb584ea"
+  integrity sha1-gyqyDJAJLBJciu6onzgYAQy1hOo=
+  dependencies:
+    "@babel/core" "^7.9.0"
+    "@birman/babel-preset-birman" "1.2.0"
+    "@birman/utils" "1.1.2"
+    "@types/jest" "^25.2.1"
+    babel-jest "^25.2.6"
+    core-js "^3.6.4"
+    identity-obj-proxy "^3.0.0"
+    jest "^25.2.7"
+    jest-cli "^25.2.7"
+    jest-environment-jsdom-fourteen "^1.0.1"
+    regenerator-runtime "^0.13.3"
+    whatwg-fetch "^3.0.0"
 
 "@walrus/types@1.2.0":
   version "1.2.0"
@@ -8748,7 +8766,7 @@ jest-worker@^25.2.6:
     merge-stream "^2.0.0"
     supports-color "^7.0.0"
 
-jest@^25.1.0:
+jest@^25.1.0, jest@^25.2.7:
   version "25.2.7"
   resolved "https://registry.npm.taobao.org/jest/download/jest-25.2.7.tgz#3929a5f35cdd496f7756876a206b99a94e1e09ae"
   integrity sha1-OSml81zdSW93VodqIGuZqU4eCa4=
