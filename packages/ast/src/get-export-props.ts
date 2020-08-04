@@ -34,9 +34,8 @@ function findExportDefault(programNode: t.Program) {
 function findAssignmentExpressionProps(opts: { programNode: t.Program; name: string }) {
   const props = {};
   for (const n of opts.programNode.body) {
-    let node = n;
+    let node: any = n;
     if (t.isExpressionStatement(node)) {
-      // @ts-ignore
       node = node.expression;
     }
     if (
@@ -47,6 +46,7 @@ function findAssignmentExpressionProps(opts: { programNode: t.Program; name: str
         t.isNumericLiteral(node.right) ||
         t.isBooleanLiteral(node.right))
     ) {
+      // @ts-ignore
       props[node.left.property.name] = (node.right as t.StringLiteral).value;
     }
   }
