@@ -215,13 +215,3 @@ test('babel-plugin-auto-css-modules', () => {
   });
   expect(code).toContain(`var _a = _interopRequireDefault(require("./a.css?modules"));`);
 });
-
-test('svgr', () => {
-  const code = transformWithPreset(`import { ReactComponent } from './a.svg';`, {
-    env: {
-      targets: { ie: 10 }
-    },
-    svgr: {}
-  });
-  expect(winPath(code!)).toContain(`index.js?-svgo,+titleProp,+ref!./a.svg");`);
-});

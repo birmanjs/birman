@@ -11,67 +11,6 @@ const simplyPluginIds = ({ cwd, plugins }: { cwd: string; plugins: any }) =>
     return `[${type}] ${id.replace(winPath(cwd), '.')}`;
   });
 
-test('normal', async () => {
-  const cwd = join(fixtures, 'normal');
-  const service = new Service({
-    cwd,
-    presets: [require.resolve(join(cwd, 'preset_1')), require.resolve(join(cwd, 'preset_2'))],
-    plugins: [require.resolve(join(cwd, 'plugin_1')), require.resolve(join(cwd, 'plugin_2'))]
-  });
-  expect(service.pkg.name).toEqual('foo');
-  expect(service.initialPresets.map((p) => p.key)).toEqual([
-    'index',
-    'index',
-    '2',
-    '2',
-    'bigfish',
-    '1',
-    '1'
-  ]);
-  expect(service.initialPlugins.map((p) => p.key)).toEqual([
-    'plugin1',
-    'plugin2',
-    '2',
-    '2',
-    '1',
-    '1'
-  ]);
-
-  await service.init();
-  const plugins = simplyPluginIds({
-    cwd: cwd,
-    plugins: service.plugins
-  });
-  expect(plugins).toEqual([
-    '[preset] ./preset_1/index',
-    '[preset] ./preset_1/preset_1/index',
-    '[preset] ./preset_2/index',
-    '[preset] @birman/preset-2',
-    '[preset] birman-preset-2',
-    '[preset] @alipay/birman-preset-bigfish',
-    '[preset] @birman/preset-1',
-    '[preset] birman-preset-1',
-    '[plugin] ./preset_1/preset_1/plugin_1',
-    '[plugin] ./preset_1/plugin_1',
-    '[plugin] ./preset_1/plugin_2',
-    '[plugin] ./preset_2/plugin_1',
-    '[plugin] ./plugin_1',
-    '[plugin] ./plugin_2',
-    '[plugin] @birman/plugin-2',
-    '[plugin] birman-plugin-2',
-    '[plugin] @birman/plugin-1',
-    '[plugin] birman-plugin-1'
-  ]);
-
-  expect(service.hooks['foo'].length).toEqual(2);
-
-  const ret = await service.applyPlugins({
-    key: 'foo',
-    type: ApplyPluginsType.add
-  });
-  expect(ret).toEqual(['a', 'a']);
-});
-
 test('no package.json', () => {
   const service = new Service({
     cwd: join(fixtures, 'no-package-json')
@@ -415,45 +354,4 @@ test('enableBy', async () => {
     type: service.ApplyPluginsType.add
   });
   expect(c3).toEqual(['foo', 'bar', 'hoo']);
-});
-
-test('hasPlugins and hasPresets', async () => {
-  const cwd = join(fixtures, 'has');
-  const service = new Service({
-    cwd,
-    plugins: [
-      require.resolve(join(cwd, 'foo_plugin')),
-      require.resolve(join(cwd, 'mie_plugin_enableByConfig'))
-    ],
-    presets: [require.resolve(join(cwd, 'bar_preset'))]
-  });
-  await service.init();
-
-  // 区分 preset 和 plugin
-  expect(service.hasPlugins(['foo_id'])).toEqual(true);
-  expect(service.hasPresets(['foo_id'])).toEqual(false);
-  expect(service.hasPresets(['bar_id'])).toEqual(true);
-  expect(service.hasPlugins(['bar_id'])).toEqual(false);
-  expect(service.hasPlugins(['mie_id'])).toEqual(false);
-
-  // 不存在的插件
-  expect(service.hasPlugins(['plugin_dont_exist'])).toEqual(false);
-
-  // 禁用 bar 插件
-  service.userConfig.bar = false;
-  expect(service.hasPresets(['bar_id'])).toEqual(false);
-
-  // 启用配置开启的插件
-  service.userConfig.mie = 1;
-  expect(service.hasPlugins(['mie_id'])).toEqual(true);
-});
-
-test('resolvePackage with APP_ROOT specified', () => {
-  const appRoot = join(fixtures, 'normal', 'approot', 'nextlevel');
-  const repoRoot = join(fixtures, 'normal');
-  const service = new Service({
-    cwd: appRoot,
-    pkg: require(join(repoRoot, 'package.json'))
-  });
-  expect(service.pkg.name).toEqual('foo');
 });
