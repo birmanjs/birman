@@ -1,6 +1,6 @@
 {
   "name": "@birman/bundler-webpack",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "bundler webpack",
   "main": "index.js",
   "license": "MIT",
